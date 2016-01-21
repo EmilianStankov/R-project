@@ -29,7 +29,7 @@ barplot(sort(table(df$accomodation), decreasing=TRUE), main = "Accomodation pref
 
 peopleWithIncome=na.omit(df)
 barplot(table(peopleWithIncome$income, peopleWithIncome$accomodation), legend.text = TRUE, main="Accomodation based on income", col=topo.colors(40), las = 2, cex.names = 0.7)
-hist(peopleWithIncome$income, col=topo.colors(7))
+hist(peopleWithIncome$income, col=topo.colors(7), main="Histogram of income")
 
 barplot(table(gender, useTourOperator), legend.text = TRUE, beside = TRUE, main="People who would use tour operator service")
 barplot(table(gender, company), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend company by genders")
