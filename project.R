@@ -9,3 +9,37 @@ luggage = c("necesities, personal technology", "necesities, personal technology"
 company = c("small group", "family", "small group", "small group", "family", "small group", "small group", "small group", "family", "small group", "small group", "family", "large group", "large group", "family", "small group", "family", "small group", "small group", "small group", "small group", "small group", "family", "small group", "small group", "small group", "small group", "large group", "family", "family", "large group", "large group", "large group", "small group", "small group", "small group", "family", "small group", "small group", "small group", "small group", "family", "small group", "family", "small group", "small group", "family", "small group", "large group", "alone", "large group", "small group", "small group", "large group", "large group", "small group", "small group", "family", "large group", "family", "large group", "large group", "small group", "family", "large group", "family", "small group", "small group", "small group", "large group", "small group", "family", "small group", "large group", "family", "small group", "family", "small group", "small group", "large group", "small group", "family", "small group", "family", "large group", "small group", "small group", "small group", "small group", "small group", "small group", "family", "small group", "family", "family");
 income = c(3000, NA, 1200, 700, 500, 3400, 1000, NA, NA, 350, 1500, 2500, NA, 3000, NA, 950, NA, NA, 800, NA, 0, NA, NA, NA, 0, NA, NA, 0, 800, 200, NA, 500, 1, 2000, 40, 2800, NA, NA, 600, NA, NA, NA, NA, NA, NA, 2500, NA, NA, NA, 650, 250, 1700, 0, NA, NA, 3000, NA, NA, NA, NA, NA, NA, NA, NA, 900, 1650, NA, 643, 1000, NA, NA, 3000, NA, 2000, NA, 1500, NA, 17, 1000, NA, NA, 1000, 0, NA, 500, NA, NA, NA, 420, 400, 1000, NA, 0, NA, 0);
 df = data.frame(gender, age, accomodation, duration, transport, time, useTourOperator, luggage, company, income)
+
+columns = colnames(df)
+for (i in 1:length(columns)) {
+  print(summary(df[columns[i]]))
+}
+
+genderAndAge <- table(df$gender, df$age)
+barplot(genderAndAge,
+        main = "Age and gender of participants",
+        col=c("darkblue", "red"),
+        beside=TRUE, cex.names=0.8,
+        legend = rownames(genderAndAge))
+hist(age, col=topo.colors(10))
+
+barplot(table(gender), col=topo.colors(2), main = "Gender of participants")
+
+barplot(sort(table(df$accomodation), decreasing=TRUE), main = "Accomodation preferences", col=topo.colors(6), cex.names=0.6, las = 2)
+
+peopleWithIncome=na.omit(df)
+barplot(table(peopleWithIncome$income, peopleWithIncome$accomodation), legend.text = TRUE, main="Accomodation based on income", col=topo.colors(40), las = 2, cex.names = 0.7)
+hist(peopleWithIncome$income, col=topo.colors(7))
+
+barplot(table(gender, useTourOperator), legend.text = TRUE, beside = TRUE, main="People who would use tour operator service")
+barplot(table(gender, company), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend company by genders")
+barplot(table(gender, transport), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend transport by genders")
+barplot(table(gender, luggage), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Luggage carried by genders")
+
+barplot(table(time, accomodation), legend.text = TRUE, beside = TRUE, col=c("green", "orange", "yellow"), main = "Time of vacation and accomodation")
+
+incomeAndDaysOfVacation = df[order(df$income),]
+plot(incomeAndDaysOfVacation$income, incomeAndDaysOfVacation$duration,type='l')
+growth = lm(duration~income, data=incomeAndDaysOfVacation)
+abline(growth, col="green")
+
