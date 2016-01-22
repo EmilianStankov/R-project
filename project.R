@@ -10,6 +10,11 @@ company = c("small group", "family", "small group", "small group", "family", "sm
 income = c(3000, NA, 1200, 700, 500, 3400, 1000, NA, NA, 350, 1500, 2500, NA, 3000, NA, 950, NA, NA, 800, NA, 0, NA, NA, NA, 0, NA, NA, 0, 800, 200, NA, 500, 1, 2000, 40, 2800, NA, NA, 600, NA, NA, NA, NA, NA, NA, 2500, NA, NA, NA, 650, 250, 1700, 0, NA, NA, 3000, NA, NA, NA, NA, NA, NA, NA, NA, 900, 1650, NA, 643, 1000, NA, NA, 3000, NA, 2000, NA, 1500, NA, 17, 1000, NA, NA, 1000, 0, NA, 500, NA, NA, NA, 420, 400, 1000, NA, 0, NA, 0);
 df = data.frame(gender, age, accomodation, duration, transport, time, useTourOperator, luggage, company, income)
 
+accomodationToNumber <- function(x) {
+	if(x == "middle class hotel")
+		return (1)
+}
+
 columns = colnames(df)
 for (i in 1:length(columns)) {
   print(summary(df[columns[i]]))
@@ -43,3 +48,13 @@ plot(incomeAndDaysOfVacation$income, incomeAndDaysOfVacation$duration,type='l')
 growth = lm(duration~income, data=incomeAndDaysOfVacation)
 abline(growth, col="green")
 
+chisq.test(table(age))
+chisq.test(table(duration))
+
+chisq.test(table(df$duration, df$luggage))
+chisq.test(table(df$gender, df$luggage))
+chisq.test(table(df$gender, df$transport))
+
+chisq.test(table(peopleWithIncome$age, peopleWithIncome$income), simulate.p.value=TRUE)
+chisq.test(table(peopleWithIncome$income, peopleWithIncome$accomodation), simulate.p.value=TRUE)
+chisq.test(table(peopleWithIncome$income, peopleWithIncome$company), simulate.p.value=TRUE)
