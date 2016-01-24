@@ -33,18 +33,37 @@ barplot(table(gender), col=topo.colors(2), main = "Gender of participants")
 barplot(sort(table(df$accomodation), decreasing=TRUE), main = "Accomodation preferences", col=topo.colors(6), cex.names=0.6, las = 2)
 
 peopleWithIncome=na.omit(df)
-barplot(table(peopleWithIncome$income, peopleWithIncome$accomodation), legend.text = TRUE, main="Accomodation based on income", col=topo.colors(40), las = 2, cex.names = 0.7)
+
+highIncome = peopleWithIncome$income[which(peopleWithIncome$income > 2000)]
+midIncome = peopleWithIncome$income[which(peopleWithIncome$income > 1000 & peopleWithIncome$income < 2000)]
+lowIncome = peopleWithIncome$income[which(peopleWithIncome$income < 1000)]
+
+peopleWithIncomeText = vector(,length(peopleWithIncome$income))
+length(peopleWithIncomeText)
+for (i in 1:length(peopleWithIncome$income)) {
+  if (peopleWithIncome$income[i] > 2000) {
+    peopleWithIncomeText[i] <- "high income"
+  } else if (peopleWithIncome$income[i] > 1000) {
+    peopleWithIncomeText[i] <- "mid income"
+  } else {
+    peopleWithIncomeText[i] <- "low income"
+  }
+}
+peopleWithIncomeText
+barplot(table(peopleWithIncomeText, peopleWithIncome$accomodation), legend.text = TRUE, main="Accomodation based on income", col=c("green", "red", "blue"), beside = TRUE,  las = 2, cex.names = 0.7)
 hist(peopleWithIncome$income, col=topo.colors(7), main="Histogram of income")
 
 barplot(table(gender, useTourOperator), legend.text = TRUE, beside = TRUE, main="People who would use tour operator service")
-barplot(table(gender, company), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend company by genders")
-barplot(table(gender, transport), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend transport by genders")
-barplot(table(gender, luggage), legend.text = TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Luggage carried by genders")
+barplot(table(gender, company), beside = TRUE, col=c("red", "darkblue"), main = "Preferrend company by genders")
+legend("topleft", legend=c("Male", "Female"), fill = c("darkblue", "red"), cex=0.8)
+barplot(table(gender, transport), legend.text=TRUE, beside = TRUE, col=c("red", "darkblue"), main = "Preferrend transport by genders")
+barplot(table(gender, luggage), beside = TRUE, col=c("red", "darkblue"), main = "Luggage carried by genders")
+legend("topleft", legend=c("Male", "Female"), fill = c("darkblue", "red"), cex=0.8)
 
-barplot(table(time, accomodation), legend.text = TRUE, beside = TRUE, col=c("green", "orange", "yellow"), main = "Time of vacation and accomodation")
+barplot(table(time, accomodation), legend.text = TRUE, beside = TRUE, col=c("green", "yellow", "orange"), main = "Time of vacation and accomodation")
 
 incomeAndDaysOfVacation = df[order(df$income),]
-plot(incomeAndDaysOfVacation$income, incomeAndDaysOfVacation$duration,type='l')
+plot(incomeAndDaysOfVacation$income, incomeAndDaysOfVacation$duration, xlab="Income", ylab="Duration", main="Duration and income dependence")
 growth = lm(duration~income, data=incomeAndDaysOfVacation)
 abline(growth, col="green")
 
@@ -58,3 +77,4 @@ chisq.test(table(df$gender, df$transport))
 chisq.test(table(peopleWithIncome$age, peopleWithIncome$income), simulate.p.value=TRUE)
 chisq.test(table(peopleWithIncome$income, peopleWithIncome$accomodation), simulate.p.value=TRUE)
 chisq.test(table(peopleWithIncome$income, peopleWithIncome$company), simulate.p.value=TRUE)
+
