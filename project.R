@@ -67,14 +67,37 @@ plot(incomeAndDaysOfVacation$income, incomeAndDaysOfVacation$duration, xlab="Inc
 growth = lm(duration~income, data=incomeAndDaysOfVacation)
 abline(growth, col="green")
 
+df$duration_grcut <- cut(df$duration, 
+                       breaks = c(-Inf, 5, 8, 11, 13, 20, Inf), 
+                       labels = c("0-4", "5-7", "8-10", "11-12", "13-20", "20-max"), 
+                       right = FALSE)
+table(df$duration_grcut, df$luggage)
+
 chisq.test(table(age))
 chisq.test(table(duration))
 
-chisq.test(table(df$duration, df$luggage))
+table(df$gender, df$luggage)
+table(df$gender, df$transport)
+
+chisq.test(table(df$duration_grcut, df$luggage))
 chisq.test(table(df$gender, df$luggage))
 chisq.test(table(df$gender, df$transport))
 
-chisq.test(table(peopleWithIncome$age, peopleWithIncome$income), simulate.p.value=TRUE)
-chisq.test(table(peopleWithIncome$income, peopleWithIncome$accomodation), simulate.p.value=TRUE)
-chisq.test(table(peopleWithIncome$income, peopleWithIncome$company), simulate.p.value=TRUE)
+peopleWithIncome$income_grcut <- cut(peopleWithIncome$income, 
+                       breaks = c(-Inf, 1000, 2000, Inf), 
+                       labels = c("0-1000", "1000-2000", "2000+"), 
+                       right = FALSE)
+
+table(peopleWithIncome$income_grcut, peopleWithIncome$company)
+
+peopleWithIncome$age_grcut <- cut(peopleWithIncome$age, 
+                       breaks = c(-Inf, 21, 24, 27, Inf), 
+                       labels = c("<21", "21-23", "24-26", ">26"), 
+                       right = FALSE)
+
+table(peopleWithIncome$age_grcut, peopleWithIncome$income_grcut)
+
+chisq.test(table(peopleWithIncome$age_grcut, peopleWithIncome$income_grcut), simulate.p.value=TRUE)
+chisq.test(table(peopleWithIncome$income_grcut, peopleWithIncome$accomodation))
+chisq.test(table(peopleWithIncome$income_grcut, peopleWithIncome$company))
 
